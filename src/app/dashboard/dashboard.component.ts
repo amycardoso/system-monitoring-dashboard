@@ -14,7 +14,6 @@ export class DashboardComponent implements OnInit {
   public pageSize = 10;
   public page = 1;
 
-
   constructor(private dashboardService: DashboardService) { }
 
   ngOnInit() {
@@ -38,7 +37,7 @@ export class DashboardComponent implements OnInit {
   }
   private processTraces(traces: any) {
     this.traceList = traces.filter((trace) => {
-      return !trace.request.uri.includes('actuator');
+      return !this.checkIfIncludesPath(trace.request.uri);
     });
     this.traceList.forEach(trace => {
       switch (trace.response.status) {
@@ -58,6 +57,17 @@ export class DashboardComponent implements OnInit {
           this.httpDefaultTraces.push(trace);
       }
     });
+  }
+
+  public checkIfIncludesPath(uri: string): boolean {
+    var includesPath = false;
+    for(let path of ['actuator','swagger-resources','v2']){
+      if (uri.includes(path)) {
+        includesPath = true;
+        break;
+      }
+    }
+    return includesPath;
   }
 
 }
