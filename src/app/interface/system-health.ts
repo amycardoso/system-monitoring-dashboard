@@ -1,19 +1,18 @@
 export interface SystemHealth {
     status: string;
-    details: {
-      db: {
-        status: string,
-        details: {
-          database: string,
-          hello: number
-        }
-      },
+    components: {
       diskSpace: {
         status: string,
         details: {
           total: number,
           free: number | string,
           threshold: number
+        }
+      },
+      mongo: {
+        status: string,
+        details: {
+          version: string
         }
       }
     };
