@@ -3,6 +3,7 @@ import { DashboardService } from '../service/dashboard.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SystemHealth } from '../interface/system-health';
 import { SystemCpu } from '../interface/system-cpu';
+import Chart from 'chart.js/auto';
 
 @Component({ selector: 'app-dashboard', templateUrl: './dashboard.component.html', styleUrls: ['./dashboard.component.css'] })
 export class DashboardComponent implements OnInit {
@@ -49,6 +50,8 @@ export class DashboardComponent implements OnInit {
     this.dashboardService.getHttpTraces().subscribe(
       (response: any) => {
         this.processTraces(response.traces);
+        this.initializeBarChart();
+        this.initializePieChart();
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -128,6 +131,62 @@ export class DashboardComponent implements OnInit {
         alert(error.message);
       }
     );
+  }
+
+  private initializeBarChart(): Chart {
+    const element = document.getElementById('barChart');
+    return new Chart(element, {
+      type: "bar",
+      data: {
+        labels: ['200', '404', '400', '500'],
+        datasets: [{
+          data: [this.http200Traces.length, this.http404Traces.length, this.http400Traces.length, this.http500Traces.length],
+          backgroundColor: ['rgb(25, 135, 84)', 'rgb(255, 193, 7)', 'rgb(13, 202, 240)', 'rgb(220, 53, 69)'],
+          borderColor: ['rgb(25, 135, 84)', 'rgb(255, 193, 7)', 'rgb(13, 202, 240)', 'rgb(220, 53, 69)'],
+          borderWidth: 3
+        }]
+      },
+      options: {
+        responsive: false,
+        plugins: {
+          legend: {
+            display: false
+          },
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          }
+        }
+      }
+
+    });
+  }
+
+  private initializePieChart(): Chart {
+    const element = document.getElementById('pieChart');
+    return new Chart(element, {
+      type: "pie",
+      data: {
+        labels: ['200', '404', '400', '500'],
+        datasets: [{
+          data: [this.http200Traces.length, this.http404Traces.length, this.http400Traces.length, this.http500Traces.length],
+          backgroundColor: ['rgb(25, 135, 84)', 'rgb(255, 193, 7)', 'rgb(13, 202, 240)', 'rgb(220, 53, 69)'],
+          borderColor: ['rgb(25, 135, 84)', 'rgb(255, 193, 7)', 'rgb(13, 202, 240)', 'rgb(220, 53, 69)'],
+          borderWidth: 3
+        }]
+      },
+      options: {
+        responsive: false,
+        plugins: {
+          legend: {
+            display: true
+          }
+        }
+      }
+    });
   }
 
   private formateUptime(timestamp: number): string {
