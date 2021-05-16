@@ -29,6 +29,17 @@ export class DashboardComponent implements OnInit {
     this.getProcessUpTime(true);
   }
 
+  public onRefreshData(): void {
+    this.http200Traces = [];
+    this.http400Traces = [];
+    this.http404Traces = [];
+    this.http500Traces = [];
+    this.getTraces();
+    this.getSystemHealth();
+    this.getCpuUsage();
+    this.getProcessUpTime(false);
+  }
+
   public onSelectTrace(trace: any): void {
     this.selectedTrace = trace;
     document.getElementById('trace-modal')!.click();
