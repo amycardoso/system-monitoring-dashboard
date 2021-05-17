@@ -2,7 +2,8 @@
 
 # System Monitoring Dashboard
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.11.
+Administration panel developed using Angular to monitor health, metrics, HTTP traces, etc. of [this simple spring application](https://github.com/amycardoso/employee-manager-backend). The main objective when developing this panel was to consume the information from the Actuator and learn to use new libraries, such as Chart.js.
+![Dashboard Screeshot](https://raw.githubusercontent.com/amycardoso/system-monitoring-dashboard/main/screenshot.png)
 
 ## Development server
 
