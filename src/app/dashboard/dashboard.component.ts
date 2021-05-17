@@ -215,4 +215,15 @@ export class DashboardComponent implements OnInit {
     }, 1000);
   }
 
+  public exportTableToExcel(): void {
+    const downloadLink = document.createElement('a');
+    const dataType = 'application/vnd.ms-excel';
+    const table = document.getElementById('httptrace-table');
+    const tableHTML = table!.outerHTML.replace(/ /g, '%20');
+    const filename = 'httptrace.xls';
+    document.body.appendChild(downloadLink);
+    downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+    downloadLink.download = filename;
+    downloadLink.click();
+  }
 }
