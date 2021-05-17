@@ -19,8 +19,8 @@
         <span><i class="fa fa-clock-o"></i> Up Time: {{processUpTime}}</span>
       </li>
     </ul>
-    <div class="form-inline my-2 my-lg-0">
-      <button class="btn btn-primary my-2 my-sm-0">
+    <div class="form-inline my-2 my-lg-0" style="margin-right: 20px;">
+      <button (click)="onRefreshData()" class="btn btn-dark my-2 my-sm-0">
         Refresh Data
       </button>
     </div>
@@ -28,7 +28,7 @@
 </nav>
 
 <div class="container">
-  <div class="row" style="margin-top: 10px;">
+  <div class="row" style="margin-top: 30px;">
     <div class="col-lg-3 col-md-6 col-sm-6">
       <div class="card card-stats bg-success">
         <div class="card-body ">
@@ -56,7 +56,7 @@
     </div>
 
     <div class="col-lg-3 col-md-6 col-sm-6">
-      <div class="card card-stats bg-info">
+      <div class="card card-stats bg-warning">
         <div class="card-body ">
           <div class="row">
             <div class="col-5 col-md-4">
@@ -82,7 +82,7 @@
     </div>
 
     <div class="col-lg-3 col-md-6 col-sm-6">
-      <div class="card card-stats bg-warning">
+      <div class="card card-stats bg-info">
         <div class="card-body ">
           <div class="row">
             <div class="col-5 col-md-4">
@@ -132,51 +132,67 @@
         </div>
       </div>
     </div>
+  </div>
 
-    <hr>
+  <div class="container-fluid">
+    <div class="row clearfix">
+      <!-- Bar Chart -->
+      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div style="height: 250px; width: 100%;">
+          <canvas id="barChart" style="display: block; width: 100%; height: 100%;"></canvas>
+        </div>
+      </div>
+      <!-- Pie Chart -->
+      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div style="height: 250px; width: 100%;">
+          <canvas id="pieChart" style="display: block; width: 100%; height: 100%;"></canvas>
+        </div>
+      </div>
+      <!-- #END# Pie Chart -->
+    </div>
+  </div>
 
-    <div class="col-sm-6 col-md-6 col-lg-12" style="margin-top: 50px;">
-      <h5 class="pull-left">HTTP Traces</h5>
-      <button type="button" class="btn btn-primary btn-sm pull-right" style="margin-bottom: 10px;">
-        <i class="fa fa-external-link" aria-hidden="true"></i>
-        export to Excel</button>
-      <table class="table table-hover text-center" id="httptrace-table">
-        <thead>
-          <tr>
-            <th>Time Stamp</th>
-            <th>Method</th>
-            <th>Time Taken(ms)</th>
-            <th>Status</th>
-            <th>URI</th>
-            <th>View</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let trace of traceList | paginate: { id: 'trace-list',
+  <div class="col-sm-6 col-md-6 col-lg-12" style="margin-top: 10px;">
+    <h5 class="pull-left">HTTP Traces</h5>
+    <button type="button" (click)="exportTableToExcel()" class="btn btn-dark btn-sm pull-right" style="margin-bottom: 10px;">
+      <i class="fa fa-external-link" aria-hidden="true"></i>
+      export to Excel</button>
+    <table class="table table-hover text-center" id="httptrace-table">
+      <thead>
+        <tr>
+          <th>Time Stamp</th>
+          <th>Method</th>
+          <th>Time Taken(ms)</th>
+          <th>Status</th>
+          <th>URI</th>
+          <th>View</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let trace of traceList | paginate: { id: 'trace-list',
         itemsPerPage: pageSize,
         currentPage: page,
         totalItems: traceList?.length }" style="cursor: pointer;">
-            <td (click)="onSelectTrace(trace)">{{trace?.timestamp | date:'medium'}}</td>
-            <td (click)="onSelectTrace(trace)">{{trace?.request.method}}</td>
-            <td (click)="onSelectTrace(trace)">{{trace?.timeTaken}}</td>
-            <td (click)="onSelectTrace(trace)" [ngSwitch]="trace?.response.status">
-              <span *ngSwitchCase=200 class="badge bg-success">{{trace?.response.status}}</span>
-              <span *ngSwitchCase=400 class="badge bg-info text-dark">{{trace?.response.status}}</span>
-              <span *ngSwitchCase=404 class="badge bg-warning text-dark">{{trace?.response.status}}</span>
-              <span *ngSwitchCase=500 class="badge bg-danger">{{trace?.response.status}}</span>
-              <span *ngSwitchDefault class="badge bg-primary">{{trace?.response.status}}</span>
-            </td>
-            <td (click)="onSelectTrace(trace)">{{trace?.request.uri}}</td>
-            <td>
-              <button (click)="onSelectTrace(trace)" class="btn btn-outline-info"><i class="fa fa-eye"></i></button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <pagination-controls class="text-center" id="trace-list" (pageChange)="page = $event" [maxSize]="10"
-        [directionLinks]="true"></pagination-controls>
+          <td (click)="onSelectTrace(trace)">{{trace?.timestamp | date:'medium'}}</td>
+          <td (click)="onSelectTrace(trace)">{{trace?.request.method}}</td>
+          <td (click)="onSelectTrace(trace)">{{trace?.timeTaken}}</td>
+          <td (click)="onSelectTrace(trace)" [ngSwitch]="trace?.response.status">
+            <span *ngSwitchCase=200 class="badge bg-success">{{trace?.response.status}}</span>
+            <span *ngSwitchCase=400 class="badge bg-info text-dark">{{trace?.response.status}}</span>
+            <span *ngSwitchCase=404 class="badge bg-warning text-dark">{{trace?.response.status}}</span>
+            <span *ngSwitchCase=500 class="badge bg-danger">{{trace?.response.status}}</span>
+            <span *ngSwitchDefault class="badge bg-primary">{{trace?.response.status}}</span>
+          </td>
+          <td (click)="onSelectTrace(trace)">{{trace?.request.uri}}</td>
+          <td>
+            <button (click)="onSelectTrace(trace)" class="btn btn-outline-info"><i class="fa fa-eye"></i></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <pagination-controls class="text-center" id="trace-list" (pageChange)="page = $event" [maxSize]="10"
+      [directionLinks]="true"></pagination-controls>
 
-    </div>
   </div>
 
   <!-- Button trigger modal -->
@@ -259,7 +275,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
