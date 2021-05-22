@@ -85,7 +85,7 @@ export class DashboardComponent implements OnInit {
 
   public checkIfIncludesPath(uri: string): boolean {
     var includesPath = false;
-    for (let path of ['actuator', 'swagger-resources', 'v2']) {
+    for (let path of ['actuator', 'swagger-resources', 'swagger-ui', 'v2']) {
       if (uri.includes(path)) {
         includesPath = true;
         break;
