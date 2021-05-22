@@ -2,7 +2,13 @@
 
 # System Monitoring Dashboard
 
-Administration panel developed using Angular to monitor health, metrics, HTTP traces, etc. of [this simple spring application](https://github.com/amycardoso/employee-manager-backend). The main objective when developing this panel was to consume the information from the Actuator and learn to use new libraries, such as Chart.js.
+Dashboard developed using Angular to monitor health, metrics, HTTP traces, etc. of this [simple employee management app](https://github.com/amycardoso/employee-manager-backend).
+The operational information of the application is consumed through HTTP endpoints and is presented in a more visual way, through graphics and descriptive tables. It is also possible to download an xls file with the data of all HTTP requests.
+The main objective in the development of this dashboard was to put into practice the knowledge acquired about the angular framework and learn to use the Chart.js library.
+
+> The frotend + backend are hosted on heroku, so it may take a while for
+> the application to load the first time.
+
 ![Dashboard Screeshot](https://raw.githubusercontent.com/amycardoso/system-monitoring-dashboard/main/screenshot.png)
 
 ## Development server
