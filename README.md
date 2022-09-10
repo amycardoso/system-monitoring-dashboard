@@ -1,4 +1,4 @@
-![Codeship](https://img.shields.io/codeship/f07fbc24-5e00-4b66-ad2f-d9b76557acfd)
+![GitHub deployments](https://img.shields.io/github/deployments/amycardoso/system-monitoring-dashboard/Production?label=vercel&logo=vercel)
 
 # System Monitoring Dashboard
 
